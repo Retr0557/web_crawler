@@ -164,6 +164,63 @@ function testTitleExtraction() {
   return true;
 }
 
+function testContentExtraction() {
+  console.log('\nTesting content extraction...');
+  const crawler = new WebCrawler();
+  
+  const htmlWithContent = `
+    <html>
+      <head>
+        <title>Test Page</title>
+        <script>console.log('should be removed');</script>
+        <style>body { color: red; }</style>
+      </head>
+      <body>
+        <h1>Main Heading</h1>
+        <p>This is a paragraph with some text.</p>
+        <p>Another paragraph here.</p>
+        <script>alert('ignore this');</script>
+      </body>
+    </html>
+  `;
+  
+  const htmlWithoutContent = '<html><head></head><body></body></html>';
+  
+  const content1 = crawler.extractContent(htmlWithContent);
+  const content2 = crawler.extractContent(htmlWithoutContent);
+  
+  // Check that content is extracted
+  if (!content1.includes('Main Heading')) {
+    console.error(`❌ Expected content to include "Main Heading", got "${content1}"`);
+    return false;
+  }
+  
+  if (!content1.includes('This is a paragraph')) {
+    console.error(`❌ Expected content to include paragraph text`);
+    return false;
+  }
+  
+  // Check that scripts and styles are removed
+  if (content1.includes('console.log') || content1.includes('alert')) {
+    console.error(`❌ Content should not include script text`);
+    return false;
+  }
+  
+  if (content1.includes('color: red')) {
+    console.error(`❌ Content should not include style text`);
+    return false;
+  }
+  
+  // Check empty content
+  if (content2 !== 'No content') {
+    console.error(`❌ Expected "No content" for empty HTML, got "${content2}"`);
+    return false;
+  }
+  
+  console.log('✅ Content extraction tests passed');
+  return true;
+}
+
 function testCrawlerConfiguration() {
   console.log('\nTesting crawler configuration...');
   
@@ -201,6 +258,7 @@ async function runTests() {
     testSameDomain,
     testLinkExtraction,
     testTitleExtraction,
+    testContentExtraction,
     testCrawlerConfiguration
   ];
   
