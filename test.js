@@ -18,19 +18,25 @@ function testUrlValidation() {
     ''
   ];
   
+  let hasError = false;
+  
   validUrls.forEach(url => {
     if (!crawler.isValidUrl(url)) {
       console.error(`❌ Expected ${url} to be valid`);
-      return false;
+      hasError = true;
     }
   });
   
   invalidUrls.forEach(url => {
     if (crawler.isValidUrl(url)) {
       console.error(`❌ Expected ${url} to be invalid`);
-      return false;
+      hasError = true;
     }
   });
+  
+  if (hasError) {
+    return false;
+  }
   
   console.log('✅ URL validation tests passed');
   return true;
@@ -47,13 +53,19 @@ function testUrlNormalization() {
     { input: 'https://example.com/path/?query=1#fragment', expected: 'https://example.com/path?query=1' }
   ];
   
+  let hasError = false;
+  
   tests.forEach(test => {
     const result = crawler.normalizeUrl(test.input);
     if (result !== test.expected) {
       console.error(`❌ normalizeUrl(${test.input}) = ${result}, expected ${test.expected}`);
-      return false;
+      hasError = true;
     }
   });
+  
+  if (hasError) {
+    return false;
+  }
   
   console.log('✅ URL normalization tests passed');
   return true;
@@ -70,13 +82,19 @@ function testSameDomain() {
     { base: 'http://example.com', target: 'https://example.com', expected: true }
   ];
   
+  let hasError = false;
+  
   tests.forEach(test => {
     const result = crawler.isSameDomain(test.base, test.target);
     if (result !== test.expected) {
       console.error(`❌ isSameDomain(${test.base}, ${test.target}) = ${result}, expected ${test.expected}`);
-      return false;
+      hasError = true;
     }
   });
+  
+  if (hasError) {
+    return false;
+  }
   
   console.log('✅ Same domain tests passed');
   return true;

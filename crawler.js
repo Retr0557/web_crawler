@@ -104,9 +104,12 @@ class WebCrawler {
         maxRedirects: 5,
       });
 
+      // Safely get the final URL after redirects
+      const finalUrl = response.request?.res?.responseUrl || url;
+
       return {
         data: response.data,
-        url: response.request.res.responseUrl || url,
+        url: finalUrl,
         statusCode: response.status,
       };
     } catch (error) {
