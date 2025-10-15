@@ -1,0 +1,23 @@
+{
+  "name": "web_crawler",
+  "version": "1.0.0",
+  "description": "A simple and efficient web crawler built with Node.js",
+  "main": "crawler.js",
+  "scripts": {
+    "start": "node example.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "web-crawler",
+    "crawler",
+    "web-scraper",
+    "scraping",
+    "spider"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2"
+  }
+}
