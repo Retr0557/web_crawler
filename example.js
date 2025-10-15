@@ -15,6 +15,7 @@ async function main() {
     onPageCrawled: (pageData) => {
       console.log(`✓ Crawled [Depth ${pageData.depth}]: ${pageData.url}`);
       console.log(`  Status: ${pageData.statusCode}, Links: ${pageData.links}, Title: ${pageData.title}`);
+      console.log(`  Content length: ${pageData.content.length} characters`);
     },
     
     // Callback for errors

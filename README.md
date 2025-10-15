@@ -7,10 +7,12 @@ A simple and efficient web crawler built with Node.js that can crawl websites an
 - 🔍 **Depth-limited crawling** - Control how deep the crawler goes
 - 🎯 **Domain restriction** - Optionally limit crawling to the same domain
 - 📊 **Link extraction** - Automatically extract and follow links
+- 📝 **Content parsing** - Extract and parse text content from web pages
 - ⏱️ **Rate limiting** - Built-in delay between requests to be respectful
 - 🛡️ **URL validation** - Validates and normalizes URLs
 - 📈 **Progress tracking** - Callbacks for monitoring crawl progress
 - 🚫 **Duplicate prevention** - Tracks visited URLs to avoid duplicates
+- 💾 **Content storage** - Store parsed content to files or databases
 
 ## Installation
 
@@ -59,6 +61,7 @@ const crawler = new WebCrawler({
     console.log(`Status: ${pageData.statusCode}`);
     console.log(`Links found: ${pageData.links}`);
     console.log(`Title: ${pageData.title}`);
+    console.log(`Content: ${pageData.content.substring(0, 100)}...`);
   },
   
   // Callback for errors
@@ -88,6 +91,19 @@ crawler.crawl('https://example.com')
 | `timeout` | Number | 10000 | Request timeout in milliseconds |
 | `onPageCrawled` | Function | null | Callback function called after each page is crawled |
 | `onError` | Function | null | Callback function called when an error occurs |
+
+## Page Data Structure
+
+When a page is crawled, the `onPageCrawled` callback receives a `pageData` object with the following properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `url` | String | The final URL of the page (after redirects) |
+| `statusCode` | Number | HTTP status code of the response |
+| `depth` | Number | Crawl depth of this page from the starting URL |
+| `links` | Number | Number of links found on the page |
+| `title` | String | Page title extracted from `<title>` tag |
+| `content` | String | Parsed text content from the page (with scripts/styles removed) |
 
 ## API Reference
 
@@ -129,6 +145,22 @@ Normalizes a URL by removing fragments and trailing slashes.
   - `urlString` (String): The URL to normalize
 - **Returns:** String
 
+##### `extractTitle(html)`
+
+Extracts the title from HTML content.
+
+- **Parameters:**
+  - `html` (String): HTML content as a string
+- **Returns:** String - The page title or 'No title' if not found
+
+##### `extractContent(html)`
+
+Extracts and parses the main text content from HTML, removing scripts, styles, and other non-content elements.
+
+- **Parameters:**
+  - `html` (String): HTML content as a string
+- **Returns:** String - The cleaned text content or 'No content' if empty
+
 ## Examples
 
 ### Crawl with custom depth
@@ -152,6 +184,7 @@ const crawler = new WebCrawler({
   onPageCrawled: (pageData) => {
     // Save to database or process data
     console.log(`${pageData.url} - ${pageData.title}`);
+    console.log(`Content length: ${pageData.content.length}`);
   },
   onError: (url, error) => {
     // Log errors to file
@@ -159,6 +192,22 @@ const crawler = new WebCrawler({
   }
 });
 ```
+
+### Store content to files
+
+```javascript
+const fs = require('fs');
+const crawler = new WebCrawler({
+  onPageCrawled: (pageData) => {
+    const filename = pageData.url.replace(/[^a-z0-9]/gi, '_') + '.txt';
+    fs.writeFileSync(filename, pageData.content);
+    console.log(`Saved: ${filename}`);
+  }
+});
+await crawler.crawl('https://example.com');
+```
+
+For more examples on storing content, see [content-storage-example.js](./content-storage-example.js).
 
 ## Dependencies
 

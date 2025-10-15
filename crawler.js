@@ -156,6 +156,7 @@ class WebCrawler {
         depth,
         links: links.length,
         title: this.extractTitle(data),
+        content: this.extractContent(data),
       });
 
       // If we haven't reached max depth, crawl the links
@@ -179,6 +180,30 @@ class WebCrawler {
       return $('title').text().trim() || 'No title';
     } catch (error) {
       return 'No title';
+    }
+  }
+
+  /**
+   * Extracts and parses the main text content from HTML
+   */
+  extractContent(html) {
+    try {
+      const $ = cheerio.load(html);
+      
+      // Remove script, style, and other non-content tags
+      $('script, style, noscript, iframe, svg').remove();
+      
+      // Extract text from body, or fallback to entire document
+      const bodyText = $('body').text() || $.text();
+      
+      // Clean up whitespace: replace multiple spaces/newlines with single space
+      const cleanedText = bodyText
+        .replace(/\s+/g, ' ')
+        .trim();
+      
+      return cleanedText || 'No content';
+    } catch (error) {
+      return 'No content';
     }
   }
 
