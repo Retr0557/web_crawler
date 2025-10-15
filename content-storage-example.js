@@ -148,7 +148,9 @@ async function storeContentSummary() {
         depth: pageData.depth,
         linksCount: pageData.links,
         contentLength: pageData.content.length,
-        contentPreview: pageData.content.substring(0, 200) + '...',
+        contentPreview: pageData.content.length > 200 
+          ? pageData.content.substring(0, 200) + '...'
+          : pageData.content,
         crawledAt: new Date().toISOString()
       });
     }

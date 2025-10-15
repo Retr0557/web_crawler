@@ -103,7 +103,9 @@ async function dataCollectionExample() {
         linksCount: data.links,
         statusCode: data.statusCode,
         contentLength: data.content.length,
-        contentPreview: data.content.substring(0, 100) + '...'
+        contentPreview: data.content.length > 100 
+          ? data.content.substring(0, 100) + '...'
+          : data.content
       });
     }
   });
