@@ -6,7 +6,7 @@ async function main() {
 
   const crawler = new WebCrawler({
     maxDepth: 2,           // Maximum depth to crawl
-    maxPages: 50,          // Maximum number of pages to crawl
+    maxPages: 15,          // Maximum number of pages to crawl
     sameDomain: true,      // Only crawl pages on the same domain
     delay: 1000,           // Delay between requests (ms)
     timeout: 10000,        // Request timeout (ms)

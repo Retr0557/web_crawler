@@ -14,7 +14,7 @@ async function basicExample() {
   });
   
   try {
-    const urls = await crawler.crawl('https://example.com');
+    const urls = await crawler.crawl('https://news.ycombinator.com');
     console.log(`\nCrawled ${urls.length} pages\n`);
   } catch (error) {
     console.error('Error:', error.message);
@@ -46,7 +46,7 @@ async function deepCrawlExample() {
   });
   
   try {
-    await crawler.crawl('https://example.com');
+    await crawler.crawl('https://news.ycombinator.com');
     
     console.log(`\n--- Summary ---`);
     console.log(`Successfully crawled: ${crawledPages.length}`);
@@ -76,7 +76,7 @@ async function crossDomainExample() {
   });
   
   try {
-    await crawler.crawl('https://example.com');
+    await crawler.crawl('https://news.ycombinator.com');
     
     console.log(`\n--- Domains Visited ---`);
     domains.forEach(domain => console.log(`- ${domain}`));
@@ -107,7 +107,7 @@ async function dataCollectionExample() {
   });
   
   try {
-    await crawler.crawl('https://example.com');
+    await crawler.crawl('https://news.ycombinator.com');
     
     console.log('\n--- Collected Data ---');
     console.log(JSON.stringify(pageData, null, 2));
@@ -124,7 +124,7 @@ function programmaticExample() {
   
   // Test URL validation
   const urlsToTest = [
-    'https://example.com',
+    'https://news.ycombinator.com',
     'http://test.com/path',
     'ftp://invalid.com',
     'not-a-url'
@@ -138,10 +138,10 @@ function programmaticExample() {
   
   // Test URL normalization
   const urlsToNormalize = [
-    'https://example.com/',
-    'https://example.com/path/',
-    'https://example.com/page#section',
-    'https://example.com/page?q=1#top'
+    'https://news.ycombinator.com/',
+    'https://news.ycombinator.com/path/',
+    'https://news.ycombinator.com/page#section',
+    'https://news.ycombinator.com/page?q=1#top'
   ];
   
   console.log('\nURL Normalization:');
@@ -153,9 +153,9 @@ function programmaticExample() {
   
   // Test domain checking
   console.log('\nSame Domain Check:');
-  console.log(`  example.com vs example.com/page: ${crawler.isSameDomain('https://example.com', 'https://example.com/page')}`);
-  console.log(`  example.com vs other.com: ${crawler.isSameDomain('https://example.com', 'https://other.com')}`);
-  console.log(`  sub.example.com vs example.com: ${crawler.isSameDomain('https://sub.example.com', 'https://example.com')}`);
+  console.log(`  example.com vs example.com/page: ${crawler.isSameDomain('https://news.ycombinator.com', 'https://news.ycombinator.com/page')}`);
+  console.log(`  example.com vs other.com: ${crawler.isSameDomain('https://news.ycombinator.com', 'https://other.com')}`);
+  console.log(`  sub.example.com vs example.com: ${crawler.isSameDomain('https://sub.example.com', 'https://news.ycombinator.com')}`);
 }
 
 // Run examples
